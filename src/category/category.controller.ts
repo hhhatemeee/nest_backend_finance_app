@@ -8,10 +8,12 @@ import {
   Delete,
   ParseIntPipe,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common'
 import { CategoryService } from './category.service'
 import { Prisma } from '@prisma/client'
 import { CategoryDto } from './dto/category.dto'
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
 
 @Controller('category')
 export class CategoryController {
@@ -22,6 +24,7 @@ export class CategoryController {
     return this.categoryService.create(data)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.categoryService.findAll()

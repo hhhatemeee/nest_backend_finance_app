@@ -22,7 +22,7 @@ export class AuthService {
     return await this.prisma.user.create({ data: user })
   }
 
-  async validateUser(user: Prisma.UserCreateInput) {
+  async validateUser(user: Omit<Prisma.UserCreateInput, 'email'>) {
     const findUser = await this.getUser(user.username)
 
     if (user.password === findUser.password) {
