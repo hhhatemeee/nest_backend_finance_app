@@ -25,7 +25,6 @@ export class TransactionService {
   }
 
   async createTransaction(data: Prisma.TransactionCreateInput) {
-    console.log(data)
     return this.prisma.transaction.create({ data })
   }
 

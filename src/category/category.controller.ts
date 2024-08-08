@@ -36,7 +36,7 @@ export class CategoryController {
     return this.categoryService.findAll()
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.categoryService.getById(id)

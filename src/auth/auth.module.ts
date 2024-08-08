@@ -8,6 +8,7 @@ import { LocalStrategy } from './strategies/local.strategy'
 import { JwtStrategy } from './strategies/jwt.strategy'
 import { RefreshJwtStrategy } from './strategies/refresh.strategy'
 
+console.log(process.env.secret)
 @Module({
   imports: [
     PassportModule,
@@ -26,5 +27,6 @@ import { RefreshJwtStrategy } from './strategies/refresh.strategy'
     JwtStrategy,
     RefreshJwtStrategy,
   ],
+  exports: [AuthService],
 })
 export class AuthModule {}
