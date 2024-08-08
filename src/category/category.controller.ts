@@ -14,14 +14,20 @@ import { CategoryService } from './category.service'
 import { Prisma } from '@prisma/client'
 import { CategoryDto } from './dto/category.dto'
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
+import { User } from 'src/decorators/user.decorator'
+import { UserRequest } from 'src/decorators/dto/user.dto'
 
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body(new ValidationPipe()) data: CategoryDto) {
-    return this.categoryService.create(data)
+  create(
+    @Body(new ValidationPipe()) data: CategoryDto,
+    @User() user: UserRequest,
+  ) {
+    return this.categoryService.create(data, user.role)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -30,21 +36,25 @@ export class CategoryController {
     return this.categoryService.findAll()
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.categoryService.findOne(id)
+    return this.categoryService.getById(id)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCategoryDto: Prisma.CategoryUpdateInput,
+    @User() user: UserRequest,
   ) {
-    return this.categoryService.update(id, updateCategoryDto)
+    return this.categoryService.update(id, updateCategoryDto, user.role)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.categoryService.remove(id)
+  remove(@Param('id', ParseIntPipe) id: number, @User() user: UserRequest) {
+    return this.categoryService.remove(id, user.role)
   }
 }
