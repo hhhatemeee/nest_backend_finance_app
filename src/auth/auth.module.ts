@@ -8,11 +8,11 @@ import { LocalStrategy } from './strategies/local.strategy'
 import { JwtStrategy } from './strategies/jwt.strategy'
 import { RefreshJwtStrategy } from './strategies/refresh.strategy'
 
-console.log(process.env.secret)
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
+      global: true,
       secret: process.env.secret,
       signOptions: {
         expiresIn: '1h',

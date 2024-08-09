@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
+import { PrismaService } from './prisma.service'
 
 @Module({
-  providers: [JwtService],
-  exports: [JwtService],
+  providers: [PrismaService],
+  exports: [PrismaService],
 })
 export class PrismaModule {}

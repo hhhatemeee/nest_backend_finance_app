@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types'
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator'
 
 export class PayloadCreateTransactionDto {
@@ -15,23 +16,9 @@ export class PayloadCreateTransactionDto {
   description?: string | null
 }
 
-export class PayloadUpdateTransactionDto {
+export class PayloadUpdateTransactionDto extends PartialType(
+  PayloadCreateTransactionDto,
+) {
   @IsNumber()
   id: number
-
-  @IsNumber()
-  @IsOptional()
-  categoryId: number
-
-  @IsNumber()
-  @IsOptional()
-  amount: number
-
-  @IsDate()
-  @IsOptional()
-  transactionDate?: Date | string | null
-
-  @IsString()
-  @IsOptional()
-  description?: string | null
 }

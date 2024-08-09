@@ -11,8 +11,10 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { CategoryService } from './category.service'
-import { Prisma } from '@prisma/client'
-import { CategoryDto } from './dto/category.dto'
+import {
+  PayloadCreateCategoryDto,
+  PayloadUpdateCategoryDto,
+} from './dto/category.dto'
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
 import { User } from 'src/decorators/user.decorator'
 import { UserRequest } from 'src/decorators/dto/user.dto'
@@ -24,37 +26,36 @@ export class CategoryController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
-    @Body(new ValidationPipe()) data: CategoryDto,
+    @Body(new ValidationPipe()) data: PayloadCreateCategoryDto,
     @User() user: UserRequest,
   ) {
-    return this.categoryService.create(data, user.role)
+    return this.categoryService.create(data, user)
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.categoryService.findAll()
-  }
-
-  // @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.categoryService.getById(id)
+  findAll(@User() user: UserRequest) {
+    return this.categoryService.findAll(user)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number, @User() user: UserRequest) {
+    return this.categoryService.getById(id, user)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('')
   update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateCategoryDto: Prisma.CategoryUpdateInput,
+    @Body(new ValidationPipe()) updateCategoryDto: PayloadUpdateCategoryDto,
     @User() user: UserRequest,
   ) {
-    return this.categoryService.update(id, updateCategoryDto, user.role)
+    return this.categoryService.update(updateCategoryDto, user)
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number, @User() user: UserRequest) {
-    return this.categoryService.remove(id, user.role)
+    return this.categoryService.remove(id, user)
   }
 }

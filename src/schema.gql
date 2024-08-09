@@ -16,7 +16,7 @@ type Query {
 
 type Mutation {
   createCategory(data: CreateCategoryInput!): Category!
-  updateCategory(id: Float!, data: UpdateCategoryInput!): Category!
+  updateCategory(data: UpdateCategoryInput!): Category!
   removeCategory(id: Float!): Category!
 }
 
